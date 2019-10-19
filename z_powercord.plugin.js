@@ -15,17 +15,17 @@ class PowercordLoader {
 
         const pcsrc = this.loadData("pcsrc")
         if(!pcsrc || (pcsrc && !existsSync(pcsrc)))
-            return showToast("Powercord not loaded, src not found")
+            return showToast("Powercord not loaded, src not found", { type: "warning" })
 
         require("module").Module.globalPaths.push(pcsrc + "/fake_node_modules")
         try {
             window.powercord = new (require(pcsrc + "/Powercord"))()
-            showToast("Powercord loaded! Enjoy")
+            showToast("Powercord loaded! Enjoy", { type: "success" })
         } catch(e) {
             console.error(e)
             if(e.message && e.message.startsWith("Cannot find module"))
-                showToast('Oops! Error while loading powercord, looks like you didn\'t do "npm i"')
-            else showToast("Oops! Error while loading powercord, check console for details")
+                showToast('Oops! Error while loading powercord, looks like you didn\'t do "npm i"', { type: "error" })
+            else showToast("Oops! Error while loading powercord, check console for details", { type: "error" })
         }
     }
     stop() {
@@ -56,7 +56,7 @@ class PowercordLoader {
                 setTimeout(() => { e.target.innerText = "Save" }, 1000)
             })
             $(s).find("#pcl-r").click(() => {
-                showToast("Reloading..")
+                showToast("Reloading..", { type: "info" })
                 this.stop()
                 this.start()
             })
